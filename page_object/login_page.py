@@ -12,15 +12,23 @@ class LoginPage(BasePage):
     __username_field = (By.ID, "username")
     __password_field = (By.NAME, "password")
     __submit_button = (By.XPATH, "//button[@id='submit']")
+    __error_row = (By.ID, 'error')
+
 
 
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
     def open(self):
-        self._driver.get(self.__url)
+        super()._open_url(self.__url)
 
     def execute_login(self, username: str, password: str):
         super()._type(self.__username_field, username)
         super()._type(self.__password_field, password)
         super()._click(self.__submit_button)
+
+    def is_error_displayed(self) -> bool:
+        return super()._is_displayed(self.__error_row)
+
+    def error_text(self) -> str:
+        return super()._get_text(self.__error_row, 3)

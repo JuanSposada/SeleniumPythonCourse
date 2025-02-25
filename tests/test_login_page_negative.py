@@ -4,7 +4,7 @@ import time
 from selenium.webdriver.common.by import By
 import pytest
 from conftest import driver
-
+from page_object.login_page import LoginPage
 
 
 class TestNegativeScenarios:
@@ -15,28 +15,37 @@ class TestNegativeScenarios:
         ('Malviviente', 'Password123',"Your username is invalid!" ),
         ('student', 'JAJAJA', "Your password is invalid!")])         #sintaxis de parametro ("name1, name2, name3",[("param1", "param2", "param3),("param2.1", "param2.2", "param2.3")]
     def test_negative_login(self, driver, username, password, expected_error_message  ):
-        # Open page
-        driver.get("https://practicetestautomation.com/practice-test-login/")
+        login_page = LoginPage(driver)
+        login_page.open()
+        login_page.execute_login(username, password)
+        assert login_page.error_text()  == expected_error_message , "Error Message not displayed"
 
-        # Type username incorrectUser into Username field
-        username_locator = driver.find_element(By.ID, 'username')
-        username_locator.send_keys(username)
-        time.sleep(1)
-        # Type password Password123 into Password field
-        password_locator = driver.find_element(By.ID, 'password')
-        password_locator.send_keys(password)
-        time.sleep(1)
-        # Push Submit button
-        submit_button_locator = driver.find_element(By.ID, 'submit')
-        submit_button_locator.click()
-        time.sleep(1)
-        # Verify error message is displayed
-        error_locator = driver.find_element(By.ID, 'error')
-        assert error_locator.is_displayed(), "error message is not displayed"
-        # Verify error message text is Your username is invalid!
-        error_text = error_locator.text
-        assert error_text == expected_error_message, "message should be: Your username is invalid!"
-        time.sleep(1)
+
+
+
+        #
+        # # Open page
+        # driver.get("https://practicetestautomation.com/practice-test-login/")
+        #
+        # # Type username incorrectUser into Username field
+        # username_locator = driver.find_element(By.ID, 'username')
+        # username_locator.send_keys(username)
+        # time.sleep(1)
+        # # Type password Password123 into Password field
+        # password_locator = driver.find_element(By.ID, 'password')
+        # password_locator.send_keys(password)
+        # time.sleep(1)
+        # # Push Submit button
+        # submit_button_locator = driver.find_element(By.ID, 'submit')
+        # submit_button_locator.click()
+        # time.sleep(1)
+        # # Verify error message is displayed
+        # error_locator = driver.find_element(By.ID, 'error')
+        # assert error_locator.is_displayed(), "error message is not displayed"
+        # # Verify error message text is Your username is invalid!
+        # error_text = error_locator.text
+        # assert error_text == expected_error_message, "message should be: Your username is invalid!"
+        # time.sleep(1)=-
         """
         Test case 2: Negative username test
         Open page

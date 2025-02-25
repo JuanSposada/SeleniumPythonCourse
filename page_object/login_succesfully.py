@@ -3,14 +3,17 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
-class LoginSuccessfullyPage:
+from page_object.base_page import BasePage
+
+
+class LoginSuccessfullyPage(BasePage):
     __url = "https://practicetestautomation.com/logged-in-successfully/"
     __header_locator = (By.XPATH, '//*[@id="loop-container"]/div/article/div[2]/p[1]/strong')
     __logout_button = (By.LINK_TEXT, 'Log out')
 
 
     def __init__(self, driver: WebDriver):
-        self._driver = driver
+        super().__init__(driver)
 
 
     @property
@@ -19,10 +22,10 @@ class LoginSuccessfullyPage:
 
     @property
     def header_text(self) -> str:
-        return self._driver.find_element(self.__header_locator).text
+        return super()._get_text(self.__header_locator)
 
     def is_logout_button_display(self) -> bool:
-        return self._driver.find_element(self.__logout_button).is_displayed()
+        return super()._is_displayed(self.__logout_button)
 
 
 
